@@ -1,0 +1,5 @@
+﻿@{
+    int veiculoID = Convert.ToInt32(Request.QueryString["veiculoID"]);
+    new VeiculoBO().Excluir(veiculoID);
+
+}

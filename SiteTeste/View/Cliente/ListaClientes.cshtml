@@ -1,0 +1,70 @@
+﻿@{
+    Page.Title = "Clientes Cadastrados";
+    Layout = "~/View/Shared/_Layout.cshtml";
+
+    IList<Cliente> listaClientes = new ClienteBO().ListaClientes();
+
+}
+
+<div class="row">
+    <div class="col-12">
+        <h1>Clientes Cadastrados</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <table class="table table-bordered table-hover">
+            <tr>
+                <th>NOME</th>
+                <th>TELEFONE</th>
+                <th>CPF</th>
+                <th>AÇÕES</th>
+            </tr>
+            @foreach (var item in listaClientes)
+            {
+                <tr id="@item.ClienteID">
+                    <td>@item.Nome </td>
+                    <td>@item.Telefone </td>
+                    <td>@item.Cpf </td>
+                    <td>
+                        <a href="~/View/Cliente/AltCliente.cshtml?ClienteID=@item.ClienteID" class="btn btn-info">Alterar</a> |
+                        <a href=" #" onclick=" excluirAJAX('@item.ClienteID')" class="btn btn-danger">Excluir</a>
+
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <a href="~/View/Cliente/CadCliente.cshtml" class="btn btn-primary"> Novo Cliente</a>
+    </div>
+</div>
+
+<script>
+    function excluirAJAX(id)
+    {
+        var xhttp = new XMLHttpRequest(); 
+        var apagar = confirm("Deseja excluir o registro?");
+        if (apagar == true)
+        {
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    
+                    var linha = document.getElementById(id);
+                    linha.parentNode.removeChild(linha);  
+
+
+
+                    
+                }
+            };
+            xhttp.open("GET", "ExcluirCliente.cshtml?ClienteID=" + id, true);  
+            xhttp.send();
+
+        }
+
+
+    }
+</script>
