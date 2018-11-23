@@ -1,0 +1,78 @@
+﻿@{
+    Page.Title = "Alterar Cliente Cadastrado";
+    Layout = "~/View/Shared/_Layout.cshtml";
+
+    int id = Convert.ToInt16(Request.QueryString["ClienteID"]);
+    Cliente objCliente = new ClienteBO().Buscar(id);
+
+    if (IsPost)
+    {
+        objCliente.ClienteID = Convert.ToInt16(Request.Form["hfClienteID"]);
+        objCliente.Nome = Request.Form["txtNome"];
+        objCliente.Cpf = Request.Form["txtCPF"];
+        objCliente.Email = Request.Form["txtEmail"];
+
+        bool sucesso = new ClienteBO().Gravar(objCliente);
+
+        if (sucesso)
+        {
+            Page.msgSucesso = "Cliente salvo com sucesso";
+        }
+        else
+        {
+            Page.msgErro = "Erro ao gravar o Cliente";
+        }
+    }
+}
+
+<div class="row">
+    <div class="col-12">
+        @if (Page.msgSucesso != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @Page.msgSucesso
+            </div>
+        }
+
+        @if (Page.msgErro != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @Page.msgErro
+            </div>
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <h1>Alterar Cliente</h1>
+    </div>
+</div>
+<form method="post" action="">
+    <div class="row">
+        <div class="col-6">
+            <input type="hidden" id="hfClienteID" name="hfClienteID" value="@objCliente.ClienteID" />
+            <label>Nome:</label>
+            <input type="text" name="txtNome" id="txtNome" class="form-control" value="@objCliente.Nome" />
+        </div>
+        <div class="col-6">
+            <label>Matrícula:</label>
+            <input type="text" name="txtMatricula" id="txtMatricula" class="form-control" value="@objCliente.Telefone" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <label>CPF:</label>
+            <input type="text" name="txtCPF" id="txtCPF" class="form-control" value="@objCliente.Cpf" />
+        </div>
+        <div class="col-6">
+            <label>E-mail:</label>
+            <input type="email" name="txtEmail" id="txtEmail" class="form-control" value="@objCliente.Email" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-12">
+            <input type="submit" name="btnGravar" value="Gravar" class="btn btn-success" />
+        </div>
+    </div>
+</form>

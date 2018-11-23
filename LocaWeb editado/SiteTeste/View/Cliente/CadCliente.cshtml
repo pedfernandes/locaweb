@@ -1,0 +1,110 @@
+﻿@{
+    Page.Title = "Cadastro do cliente ";
+    Layout = "~/View/Shared/_Layout.cshtml";
+
+    if (IsPost)
+    {
+        Cliente objCliente = new Cliente();
+        objCliente.Nome = Request.Form["txtNome"];
+        objCliente.Telefone = Request.Form["txtMatricula"];
+        objCliente.Cpf = Request.Form["txtCPF"];
+        objCliente.Email = Request.Form["txtEmail"];
+
+        bool sucesso = new ClienteBO().Gravar(objCliente);
+
+        if (sucesso)
+        {
+            Page.msgSucesso = "Reserva realizada com sucesso, aguarde o contato da nossa Equipe. Obrigado";
+        }
+        else
+        {
+            Page.msgErro = "Erro ao confirmar reserva";
+        }
+    }
+
+   
+
+    IList<Veiculo> listaVeiculos = new VeiculoBO().ListaVeiculos();
+
+}
+<div class="row">
+    <div class="col-12">
+        @if (Page.msgSucesso != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @Page.msgSucesso
+            </div>
+        }
+
+        @if (Page.msgErro != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @Page.msgErro
+            </div>
+        }
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-12">
+        <h2>Confirme sua locação:</h2>
+    </div>
+</div>
+
+
+
+
+<div class="row">
+    <div class="col-12">
+        <h2>Dados Pessoais</h2>
+    </div>
+</div>
+<form method="post" action="">
+
+
+
+    <div class="row">
+        <div class="col-12">
+            <label>Nome:</label>
+            <input type="text" name="txtNome" id="txtNome" class="form-control" />
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <label>CPF:</label>
+            <input type="text" name="txtCPF" id="txtCPF" class="form-control" />
+        </div>
+        <div class="col-6">
+            <label>E-mail:</label>
+            <input type="email" name="txtEmail" id="txtEmail" class="form-control" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8">
+            <label>Endereço:</label>
+            <input type="text" name="txtEndereco" id="txtEndereco" class="form-control" />
+        </div>
+        <div class="col-4">
+            <label>Telefone:</label>
+            <input type="text" name="txtTelefone" id="txtTelefone" class="form-control" />
+        </div>
+    </div><br />
+
+
+
+
+
+        <div class="row">
+            <div class="col-12">
+                <input type="submit" name="btnGravar" value="Confirmar Reserva" class="btn btn-success" />
+            </div>
+        </div>
+
+
+
+   
+</form>
+
+

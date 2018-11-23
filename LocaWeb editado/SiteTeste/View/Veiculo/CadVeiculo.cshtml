@@ -1,0 +1,97 @@
+﻿@{
+    Page.Title = "Cadastro de Veiculos";
+    Layout = "~/View/Shared/_Layout.cshtml";
+
+    if (IsPost)
+    {
+        Veiculo objVeiculo = new Veiculo();
+        objVeiculo.Modelo = Request.Form["txtModelo"];
+        objVeiculo.Descricao = Request.Form["txtDescricao"];
+        objVeiculo.AnoFabricacao = Convert.ToDateTime(Request.Form["txtAnoFabricacao"]);
+        objVeiculo.Km = Convert.ToInt32(Request.Form["txtKm"]);
+        objVeiculo.PrecoDiaria = Convert.ToInt32(Request["txtPrecoDiaria"]);
+        objVeiculo.Categoria = Request["txtCategoria"];
+        objVeiculo.Status = Request["txtStatus"];
+
+        bool sucesso = new VeiculoBO().Gravar(objVeiculo);
+
+        if (sucesso)
+        {
+            Page.msgSucesso = "Veiculo salvo com sucesso";
+        }
+        else
+        {
+            Page.msgErro = "Erro ao gravar o Veiculo";
+        }
+    }
+
+}
+<div class="row">
+    <div class="col-12">
+        @if (Page.msgSucesso != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @Page.msgSucesso
+            </div>
+        }
+
+        @if (Page.msgErro != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @Page.msgErro
+            </div>
+        }
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-12">
+        <h1>Cadastro de Veiculos</h1>
+    </div>
+</div>
+<form method="post" action="">
+    <div class="row">
+        <div class="col-6">
+            <label>Modelo:</label>
+            <input type="text" name="txtModelo" id="txtModelo" class="form-control" />
+        </div>
+        <div class="col-6">
+            <label>Descrição:</label>
+            <input type="text" name="txtDescricao" id="txtDescricao" class="form-control" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <label>Ano Fabricação:</label>
+            <input type="date" name="txtAnoFabricacao" id="txtAnoFabricacao" class="form-control" />
+        </div>
+        <div class="col-4">
+            <label>Km:</label>
+            <input type="text" name="txtKm" id="txtKm" class="form-control" />
+        </div>
+        <div class="col-4">
+            <label>Preço diária:</label>
+            <input type="text" name="txtPrecoDiaria" id="txtPrecoDiaria" class="form-control" />
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <label>Categoria:</label>
+            <input type="text" name="txtCategoria" id="txtCategoria" class="form-control" />
+        </div>
+        <div class="col-6">
+            <label>Status:</label>
+            <input type="text" name="txtStatus" id="txtStatus" class="form-control" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-12">
+            <input type="submit" name="btnGravar" value="Gravar" class="btn btn-success" />
+        </div>
+    </div>
+</form>
+
+

@@ -1,0 +1,74 @@
+﻿@{
+    Page.Title = "Locações ";
+    Layout = "~/View/Shared/_Layout.cshtml";
+
+    IList<Locacao> listaLocacoes = new LocacaoBO().ListaLocacoes();
+
+}
+
+<div class="row">
+    <div class="col-12">
+        <h1>Locacões em aberto</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <table class="table table-bordered table-hover">
+            <tr>
+                <th>COD.LOCAÇÂO:</th>
+                <th>CLIENTE:</th>
+                <th>DATA INICIO:</th>
+                <th>DATA ENTREGA:</th>
+                <th>VEICULO:</th>
+                <th>AÇÂO:</th>
+            </tr>
+            @foreach (var item in listaLocacoes)
+            {
+                <tr id="@item.CodLocacao">
+                    <td>@item.CodLocacao</td>
+                    <td>@item.ObjCliente.Nome </td>
+                    <td>@item.DataInicio </td>
+                    <td>@item.DataEntrega </td>
+                    <td>@item.ObjVeiculo.Modelo</td>
+                    <td>
+                        <a href="~/View/Veiculo/AltVeiculo.cshtml?VeiculoID=@item.CodLocacao" class="btn btn-info">Alterar</a> |
+                        <a href=" #" onclick=" excluirAJAX('@item.CodLocacao')" class="btn btn-danger">Excluir</a>
+
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <a href="~/View/Cliente/CadCliente.cshtml" class="btn btn-primary"> Novo Cliente</a>
+    </div>
+</div>
+
+<script>
+    function excluirAJAX(id)
+    {
+        var xhttp = new XMLHttpRequest();
+        var apagar = confirm("Deseja excluir o registro?");
+        if (apagar == true)
+        {
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+
+                    var linha = document.getElementById(id);
+                    linha.parentNode.removeChild(linha);
+
+
+
+
+                }
+            };
+            xhttp.open("GET", "ExcluirCliente.cshtml?ClienteID=" + id, true);
+            xhttp.send();
+
+        }
+
+
+    }
+</script>
